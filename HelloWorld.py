@@ -1,0 +1,1 @@
+print("This is the beginning of MIN121 Course Work")
