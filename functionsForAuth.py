@@ -30,7 +30,9 @@ def account_new():
     print("You have been registered")
 
 def account_auth():
+    
     while True:
+        global account_type
         chat = input("Type in E if you are an employee or C for Client: ")
         if chat=="E":
             account_type=EmployeesSheet
@@ -42,21 +44,14 @@ def account_auth():
     CHECK2=False
     while CHECK1==False and CHECK2==False:
         account=((input("Enter login: ")),(input("Enter password: ")))
-        if account_type==EmployeesSheet:
-            for col in EmployeesSheet["B"]:
-                if col.value==account[0]:
-                    CHECK1=True
-            for col in EmployeesSheet["C"]:
-                if col.value==account[1]:
-                    CHECK2=True
-        elif account_type==ClientsSheet:
-            for col in ClientsSheet["B"]:
-                if col.value==account[0]:
-                    CHECK1=True
-            for col in ClientsSheet["C"]:
-                if col.value==account[1]:
-                    CHECK2=True
-        elif CHECK1==False or CHECK2==False:
-            print("Try again")
-            continue
+        for col in account_type["B"]:
+            if col.value==account[0]:
+                global row
+                row=col
+                CHECK1=True
+        for col in account_type["C"]:
+            if col.value==account[1]:
+                CHECK2=True
+        print("Try again")
     print("Success")
+
