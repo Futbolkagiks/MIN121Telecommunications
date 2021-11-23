@@ -30,11 +30,14 @@ def account_new():
     print("You have been registered")
 
 def account_auth():
-    chat = input("Type in E if you are an employee or C for Client: ")
-    if chat=="E":
-        account_type=EmployeesSheet
-    elif chat=="C":
-        account_type=ClientsSheet
+    while True:
+        chat = input("Type in E if you are an employee or C for Client: ")
+        if chat=="E":
+            account_type=EmployeesSheet
+            break
+        elif chat=="C":
+            account_type=ClientsSheet
+            break
     CHECK1=False
     CHECK2=False
     while CHECK1==False and CHECK2==False:
