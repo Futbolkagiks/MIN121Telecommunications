@@ -1,25 +1,36 @@
-from functionsForAuth import *
+from functionsForReg import *
 from typing import Tuple
 from openpyxl import load_workbook
 import openpyxl
+from colorama import init, Fore, Back, Style
 workbook=load_workbook(filename="Users.xlsx")
 EmployeesSheet=workbook["Employees"]
 ClientsSheet=workbook["Clients"]
-Tariffs=load_workbook(filename="Tariffs.xlsx")
+VVX=load_workbook(filename="Tariffs.xlsx")
+Tariffs=VVX["Tariffs"]
 
-##def showTariffs():
+def showTariffs():
+    sheet = Tariffs['Sheet1']
+    for row in sheet.iter_rows():
+        for cell in row:
+            print(Fore.CYAN, Style.BRIGHT + f' {cell.value:7}', end=' ')
+        print()
 
-def user_menu(option):
+def clients():
+    for row in ClientsSheet.iter_rows(max_col=3):
+        for cell in row:
+            print(Fore.LIGHTGREEN_EX, Style.BRIGHT + f' {cell.value}', end=' ')
+        print()
+
+def user_menu(option,row):
     while True:
         if option == 1:
             for col in Tariffs["A"]:
-                if col.value()==ClientsSheet["E{}".format(row)]:
+                if str(col.value())==str(ClientsSheet["E{}".format(row)]):
                     ActiveT=Tariffs["B{}".format(col)]
-
             for col in Tariffs["A"]:
-                if col.value()==ClientsSheet["F{}".format(row)]:
+                if str(col.value())==str(ClientsSheet["F{}".format(row)]):
                     PreviousT=Tariffs["B{}".format(col)]
-
             print("Your active Tariff is {}".format(ActiveT))
             print("Your previous Tariff was {}".format(PreviousT))
 
