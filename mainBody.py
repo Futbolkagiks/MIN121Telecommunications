@@ -22,16 +22,19 @@ def account_auth():
             break
     CHECK1=False
     CHECK2=False
-    while CHECK1==False and CHECK2==False:
+    while (CHECK1==False) and (CHECK2==False): #Разобраться с CHECK2
         account=((input("Enter login: ")),(input("Enter password: ")))
-        for col in account_type["C"]:
-            if col.value==account[0]:
-                global row
-                row=col
+        for col in account_type.iter_rows(min_col=3,max_col=7,min_row=2,values_only=True):
+            if col[0]==account[0]:
+                print(CHECK1,CHECK2)
                 CHECK1=True
-        for col in account_type["D"]:
-            if col.value==account[1]:
+                print(CHECK1,CHECK2)
+            if col[1]==account[1]:
+                print(CHECK1,CHECK2)
+                global IDTariff
+                IDTariff=(col[3],col[4])
                 CHECK2=True
+                print(CHECK1,CHECK2)
         if CHECK1==False or CHECK2==False:
             print("Try again")
     print("Success")
@@ -54,8 +57,9 @@ if account_type==ClientsSheet:
           'My balance - 2\n'
           'Subscribe to Tariff - 3\n'
           'Exit the program - 0\n')
+    print(IDTariff)
     option = int(input('Select an option: '))
-    user_menu(option,row)
+    user_menu(option,IDTariff)
 
 elif account_type==EmployeesSheet:
     print('- Employee menu -\n'
@@ -68,4 +72,4 @@ elif account_type==EmployeesSheet:
           'Issuing tariffs - 6\n'
           'Exit the pr  ogram - 0\n')
     option = int(input('Select an option: '))
-    user_menu(option,row)
+    user_menu(option)
