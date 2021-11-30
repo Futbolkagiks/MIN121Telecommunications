@@ -3,6 +3,9 @@ from menu import *
 from typing import *
 from openpyxl import *
 from colorama import init, Fore, Back, Style
+import pandas as pd
+from menuFunctions import *
+
 workbook=load_workbook(filename="Users.xlsx")
 EmployeesSheet=workbook["Employees"]
 ClientsSheet=workbook["Clients"]
@@ -13,7 +16,7 @@ def account_auth():
     global account_type
     print("Authentication")
     while True:
-        chat = input("Type in E if you are an Employee or C for Client: ")
+        chat = input("Type in E if you are an Employee or C for Client: ").upper()
         if chat=="E":
             account_type=EmployeesSheet
             break
@@ -24,20 +27,17 @@ def account_auth():
     CHECK2=False
     while (CHECK1==False) and (CHECK2==False): #Разобраться с CHECK2
         account=((input("Enter login: ")),(input("Enter password: ")))
-        for col in account_type.iter_rows(min_col=3,max_col=7,min_row=2,values_only=True):
-            if col[0]==account[0]:
-                print(CHECK1,CHECK2)
+        for col in account_type.iter_rows(max_col=7,min_row=2,values_only=True):
+            if col[2]==account[0]:
                 CHECK1=True
-                print(CHECK1,CHECK2)
-            if col[1]==account[1]:
-                print(CHECK1,CHECK2)
-                global IDTariff
-                IDTariff=(col[3],col[4])
+            if col[3]==account[1]:
+                global details
+                details=col
                 CHECK2=True
-                print(CHECK1,CHECK2)
         if CHECK1==False or CHECK2==False:
             print("Try again")
     print("Success")
+    return
 
 print("WELCOME")
 while True:
@@ -46,30 +46,11 @@ while True:
         account_auth()
         break
     elif q=="NEW":
-        account_new()
+        create_User(ClientsSheet)
         account_auth()
         break
-
+print(Fore.LIGHTYELLOW_EX + "WELCOME")
 if account_type==ClientsSheet:
-    print('- Menu -\n'
-          'Please select the menu number to work with the program\n'
-          'My Tariff - 1\n'
-          'My balance - 2\n'
-          'Subscribe to Tariff - 3\n'
-          'Exit the program - 0\n')
-    print(IDTariff)
-    option = int(input('Select an option: '))
-    user_menu(option,IDTariff)
-
+    user_menu(details)
 elif account_type==EmployeesSheet:
-    print('- Employee menu -\n'
-          'Please select the menu number to work with the program\n'
-          'List of clients - 1\n'
-          'Search - 2\n'
-          'Customer history - 3\n'
-          'Tariffs - 4\n'
-          'Registration - 5\n'
-          'Issuing tariffs - 6\n'
-          'Exit the pr  ogram - 0\n')
-    option = int(input('Select an option: '))
-    user_menu(option)
+    worker_menu()
