@@ -32,11 +32,7 @@ def showMyTariff(details):
 
 def users_list(account_type):
     for col in account_type.iter_rows(values_only=True):
-        info=[col[0],col[1],col[2]]
-        if account_type==EmployeesSheet:
-            info.append(col[3])
-        else:
-            info.append(col[4])
+        info=[col[0],col[1],col[2],col[4]]
         print(Fore.LIGHTGREEN_EX, Style.BRIGHT + f' {info}', end=' \n')
     return
 

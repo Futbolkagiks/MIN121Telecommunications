@@ -25,17 +25,20 @@ def account_auth():
             break
     CHECK1=False
     CHECK2=False
-    while (CHECK1==False) and (CHECK2==False): #Разобраться с CHECK2
+    while True: #Разобраться с CHECK2
         account=((input("Enter login: ")),(input("Enter password: ")))
-        for col in account_type.iter_rows(max_col=7,min_row=2,values_only=True):
+        for col in account_type.iter_rows(min_row=2,values_only=True):
             if col[2]==account[0]:
                 CHECK1=True
             if col[3]==account[1]:
                 global details
                 details=col
                 CHECK2=True
-        if CHECK1==False or CHECK2==False:
+        if (CHECK1==True) and (CHECK2==True):
+            break
+        elif CHECK1==False or CHECK2==False:
             print("Try again")
+            continue
     print("Success")
     return
 
