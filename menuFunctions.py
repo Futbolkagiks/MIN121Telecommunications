@@ -50,6 +50,7 @@ def searchClient():
         for col in ClientsSheet.iter_rows(min_row=2,values_only=True):
             if (name.upper() in col[1].upper())==True:
                 found=True
+                print("ID     NAME     LOGIN      BALANCE")
                 print(col[0],col[1],col[2],col[4])
         if found==False:
             print("Your input was wrong. Try again")
@@ -145,7 +146,7 @@ def viewListOfApplications():
         infoTariff=ApplicationSubFunction2(q[1])
         print(f"User {infoClient[1]} wishes to use Tariff {infoTariff[1]}")
     
-#def addInfoToClient(details):
+def addInfoToClient(details):
     print("Extra INFO screen")
     add_info=[input("Enter the city where you live: "), input("Enter your age: ")]
     count=1

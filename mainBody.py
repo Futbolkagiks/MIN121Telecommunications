@@ -37,7 +37,7 @@ def account_auth():
                 CHECK2=True
         if (CHECK1==True) and (CHECK2==True):
             break
-        elif CHECK1==False or CHECK2==False:
+        elif (CHECK1==False) or (CHECK2==False):
             print("Try again")
             continue
     print("Success")
@@ -47,12 +47,18 @@ print("WELCOME")
 while True:
     q = input('To enter the program, write AUTH. If you are a new user, write NEW. If you wish to stop the programm, write EXIT: ').upper()
     if q=="AUTH":
+        workbook=load_workbook(filename="Users.xlsx")
+        EmployeesSheet=workbook["Employees"]
+        ClientsSheet=workbook["Clients"]
         account_auth()
         break
     elif q=="NEW":
-        create_User(ClientsSheet)
+        create_User("C")
+        workbook=load_workbook(filename="Users.xlsx")
+        EmployeesSheet=workbook["Employees"]
+        ClientsSheet=workbook["Clients"]
         account_auth()
-        #addInfoToClient(details)
+        addInfoToClient(details)
         break
 print(Fore.LIGHTYELLOW_EX + "WELCOME")
 if account_type==ClientsSheet:

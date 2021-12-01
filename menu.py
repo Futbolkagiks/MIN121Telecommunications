@@ -112,7 +112,7 @@ def directorMenu():
             exit()
             continue
         elif option==2:
-            create_User(EmployeesSheet)
+            create_User("E")
             exit()
             continue
         elif option==3:

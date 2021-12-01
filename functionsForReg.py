@@ -18,8 +18,15 @@ def login_check_2(new_account,type):
         else:
             break
 
-def create_User(account_type):
+def create_User(type):
     print("Welcome to registration screen!")
+    workbook=load_workbook(filename="Users.xlsx")
+    EmployeesSheet=workbook["Employees"]
+    ClientsSheet=workbook["Clients"]
+    if type=="C":
+        account_type=ClientsSheet
+    elif type=="E":
+        account_type=EmployeesSheet
     new_account=[int(len(account_type["A"])),(input("Enter name: ")),(input("Enter login: ")),(input("Enter password: "))]
     login_check_2(new_account,account_type)
     account_type.append(new_account)
