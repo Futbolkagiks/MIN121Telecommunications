@@ -1,6 +1,7 @@
 from functionsForReg import *
 from menu import *
 from typing import *
+import csv
 from openpyxl import *
 from colorama import init, Fore, Back, Style
 import pandas as pd
@@ -25,7 +26,7 @@ def account_auth():
             break
     CHECK1=False
     CHECK2=False
-    while True: #Разобраться с CHECK2
+    while True:
         account=((input("Enter login: ")),(input("Enter password: ")))
         for col in account_type.iter_rows(min_row=2,values_only=True):
             if col[2]==account[0]:
@@ -55,5 +56,8 @@ while True:
 print(Fore.LIGHTYELLOW_EX + "WELCOME")
 if account_type==ClientsSheet:
     user_menu(details)
-elif account_type==EmployeesSheet:
-    worker_menu()
+elif (account_type==EmployeesSheet):
+    if input("Input the secret password: ")=="yes":
+        directorMenu()
+    else:
+        worker_menu()

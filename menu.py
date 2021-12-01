@@ -1,13 +1,12 @@
 from os import read
 from functionsForReg import *
 from typing import Tuple
+import csv
 from openpyxl import load_workbook
 import pandas as pd
 from colorama import init, Fore, Back, Style
-import csv
 from menuFunctions import *
 
-appl = pd.read_csv('Applications.csv', delimiter=',')
 workbook=load_workbook(filename="Users.xlsx")
 EmployeesSheet=workbook["Employees"]
 ClientsSheet=workbook["Clients"]
@@ -38,6 +37,7 @@ def user_menu(details):
             continue
         elif option == 3:
             showTariffs()
+            subscribeToNewTariff(details)
             exit()
             continue
         elif option == 0:
@@ -58,10 +58,13 @@ def worker_menu():
           'Customer history - 3\n'
           'Tariffs - 4\n'
           'Issuing tariffs - 5\n'
+          'Sort clients - 6\n'
+          'Statistics of clients - 7\n'
+          "Add money to Client's balance - 8\n"
           'Exit the program - 0\n')
         option = int(input('Select an option: '))
         if option==1:
-            users_list(ClientsSheet)
+            users_list("C")
             exit()
             continue
         elif option==2:
@@ -69,7 +72,7 @@ def worker_menu():
             exit()
             continue
         elif option==3:
-            detailsClient()
+            detailsUser(ClientsSheet)
             exit()
             continue
         elif option==4:
@@ -77,18 +80,35 @@ def worker_menu():
             exit()
             continue
         elif option==5:
+            viewListOfApplications()
             exit()
             continue
+        elif option==6:
+            sortClients()
+            exit()
+            continue
+        elif option==7:
+            stats()
+            exit()
+            continue
+        elif option==8:
+            addBalance()
+            exit()
+            continue
+        elif option == 0:
+            print('Thanks for using our program. Goodbye!')
+            break
 
 def directorMenu():
     while True:
         print('- Director menu -\n'
-          'Worker list 1\n'
-          'Add worker 2\n'
-          'Delete - 3\n')
+          'Worker list - 1\n'
+          'Add worker - 2\n'
+          'Delete - 3\n'
+          'Exit the program - 0')
         option = int(input('Select an option: '))
         if option==1:
-            users_list(EmployeesSheet)
+            users_list("E")
             exit()
             continue
         elif option==2:
@@ -96,5 +116,9 @@ def directorMenu():
             exit()
             continue
         elif option==3:
-            workerID=input("Enter the ID of a worker you wish to delete: ")
-            pass
+            detailsUser(EmployeesSheet)
+            exit()
+            continue
+        elif option == 0:
+            print('Thanks for using our program. Goodbye!')
+            break

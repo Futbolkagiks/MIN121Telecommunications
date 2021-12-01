@@ -1,12 +1,13 @@
 from os import read
+
+from pandas.core.algorithms import mode
 from functionsForReg import *
 from typing import Tuple
-from openpyxl import load_workbook
+import csv
+from openpyxl import *
 import pandas as pd
 from colorama import init, Fore, Back, Style
-import csv
 
-appl = pd.read_csv('Applications.csv', delimiter=',')
 workbook=load_workbook(filename="Users.xlsx")
 EmployeesSheet=workbook["Employees"]
 ClientsSheet=workbook["Clients"]
@@ -14,8 +15,10 @@ VVX=load_workbook(filename="Tariffs.xlsx")
 Tariffs=VVX["Tariffs"]
 
 def showTariffs():
-    for row in Tariffs.iter_rows(values_only=True):
-        print(Fore.CYAN, Style.BRIGHT + f' {row}', end=' \n')
+    for row in Tariffs.iter_rows():
+        for cell in row:
+            print(Fore.CYAN, Style.BRIGHT + f' {cell.value:7}', end=' ')
+        print()
     return
 
 def showMyTariff(details):
@@ -30,8 +33,12 @@ def showMyTariff(details):
         print(f"Your previous Tariff was {PreviousT}")
         return
 
-def users_list(account_type):
-    for col in account_type.iter_rows(values_only=True):
+def users_list(XD):
+    if XD=="C":
+        type=ClientsSheet
+    elif XD=="E":
+        type=EmployeesSheet
+    for col in type.iter_rows(values_only=True):
         info=[col[0],col[1],col[2],col[4]]
         print(Fore.LIGHTGREEN_EX, Style.BRIGHT + f' {info}', end=' \n')
     return
@@ -51,10 +58,90 @@ def searchClient():
             break
     return
 
-def detailsClient():
-    idClient=int(input("Please enter ID of the client whose history you wish to explore: "))
-    for col in ClientsSheet.iter_rows(min_col=1,min_row=2,values_only=True):
-        if col[0]==idClient:
-            print(f"Client - {col[1]} /// Current tariff - {col[5]} /// Previous Tariff - {col[6]}")
+def detailsUser(type):
+    idUser=input("Please enter ID of the USER: ")
+    for col in type.iter_rows(min_row=2,values_only=True):
+        if int(idUser)==int(col[0]):
+            print(col[:3],col[4:])
     return
+
+def sortClients():
+    print(
+    'ID - 1\n'
+    'Name - 2\n'
+    'Age - 3\n'
+    'City - 4\n')
+    c = input("Enter by what you wish to sort clients: ")
+    b = pd.read_excel('Users.xlsx',sheet_name="Clients")
+    lst = []
+    for i in range(len(b["Id"])):
+        lst.append([b["Id"][i], b["Name"][i], b["Age"][i], b["City"][i]])
+    if c == '1':
+        lst = sorted(lst, key=lambda x: x[0])
+        for i in lst:
+            print(i)
+    elif c == '2':
+        lst = sorted(lst, key=lambda x: x[1])
+        for i in lst:
+            print(i)
+    elif c == '3':
+        lst = sorted(lst, key=lambda x: x[2])
+        for i in lst:
+            print(i)
+    elif c== "4":
+        lst = sorted(lst, key=lambda x: x[3])
+        for i in lst:
+            print(i)
+    return
+
+def stats():
+    age = []
+    local = []
+    b = pd.read_excel('Users.xlsx',sheet_name="Clients")
+    for i in range(len(b['Age'])):
+        age.append(b['Age'][i])
+        local.append(b['City'][i])
+    age1 = set(age)
+    local1 = set(local)
+    print('Stats by City')
+    for i in local1:
+        print(local.count(i), i)
+    print('Stats by Age')
+    for i in age1:
+        print(age.count(i), i)
+
+def addBalance():
+    idUser=input("Enter the ID of a client: ")
+    count=1
+    for col in ClientsSheet.iter_rows(min_row=2,values_only=True):
+        count+=1
+        if int(idUser)==int(col[0]):
+            ClientsSheet[f"E{count}"]=int(col[4])+int(input("How much?: "))
+            workbook.save("Users.xlsx")
+    print("Money has been added to the balance of a client")
+
+def subscribeToNewTariff(details):
+    idTariff=input("Enter the ID of Tariff you want to use: ")
+    thefile=pd.DataFrame([details[0],idTariff])
+    thefile.to_csv("Applications.csv",mode='a',header=False)
+    print("Your application has been submitted")
+    return
+
+def ApplicationSubFunction1(id):
+    for col in ClientsSheet.iter_rows(min_row=2,values_only=True):
+        if int(id)==int(col[0]):
+            return col
+
+def ApplicationSubFunction2(id):
+    for row in Tariffs.iter_rows(min_row=2,values_only=True):
+        if row[0]==id:
+            return row
+
+def viewListOfApplications():
+    thefile=pd.read_csv("Applications.csv", skiprows=[0])
+    for row in thefile:
+        infoClient=ApplicationSubFunction1(row[0])
+        infoTariff=ApplicationSubFunction2(row[1])
+        print(f"User {infoClient[1]} wishes to use Tariff {infoTariff[1]}")
+    
 
