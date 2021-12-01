@@ -145,4 +145,15 @@ def viewListOfApplications():
         infoTariff=ApplicationSubFunction2(q[1])
         print(f"User {infoClient[1]} wishes to use Tariff {infoTariff[1]}")
     
-
+#def addInfoToClient(details):
+    print("Extra INFO screen")
+    add_info=[input("Enter the city where you live: "), input("Enter your age: ")]
+    count=1
+    for col in ClientsSheet.iter_rows(min_row=2,values_only=True):
+        count+=1
+        if int(details[0])==int(col[0]):
+            ClientsSheet[f"H{count}"]=add_info[1]
+            ClientsSheet[f"I{count}"]=add_info[0]
+            ClientsSheet[f"E{count}"]=0
+            workbook.save("Users.xlsx")
+    print("Extra informations has been saved")

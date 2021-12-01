@@ -1,1 +1,8 @@
 LOREM IPSUM
+
+
+Approve/Reject Applications
+Delete USERS
+NEW USERS DO NO SHOW
+balance and tariff's price
+applications accept any tariffid

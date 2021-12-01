@@ -52,6 +52,7 @@ while True:
     elif q=="NEW":
         create_User(ClientsSheet)
         account_auth()
+        #addInfoToClient(details)
         break
 print(Fore.LIGHTYELLOW_EX + "WELCOME")
 if account_type==ClientsSheet:

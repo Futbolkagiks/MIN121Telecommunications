@@ -9,8 +9,8 @@ ClientsSheet=workbook["Clients"]
 def login_check_2(new_account,type):
     while True:
         LoginCheck=False
-        for col in type.iter_rows(min_row=2,max_col=4,min_col=3,values_only=True):
-            if new_account[1]==col[0]:
+        for col in type.iter_rows(min_row=2,values_only=True):
+            if new_account[1]==col[2]:
                 LoginCheck=True
         if LoginCheck==True:
             print("The login you typed in is already being used, try again")
@@ -26,8 +26,3 @@ def create_User(account_type):
     workbook.save("Users.xlsx")
     print("User has been registered")
     return
-
-
-
-
-
