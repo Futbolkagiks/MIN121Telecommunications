@@ -138,10 +138,11 @@ def ApplicationSubFunction2(id):
             return row
 
 def viewListOfApplications():
-    thefile=pd.read_csv("Applications.csv", skiprows=[0])
-    for row in thefile:
-        infoClient=ApplicationSubFunction1(row[0])
-        infoTariff=ApplicationSubFunction2(row[1])
+    thefile=pd.read_csv("Applications.csv")
+    for row in range(len(thefile['clientId'])):
+        q=[(thefile['clientId'][row]),(thefile['tariffId'][row])]
+        infoClient=ApplicationSubFunction1(q[0])
+        infoTariff=ApplicationSubFunction2(q[1])
         print(f"User {infoClient[1]} wishes to use Tariff {infoTariff[1]}")
     
 
